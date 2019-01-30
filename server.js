@@ -1,7 +1,4 @@
-// Require the following npm packages inside of the server.js file:
-//    * express
 
-// Node Dependencies
 var express = require('express');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -15,12 +12,13 @@ app.use(bodyParser.urlencoded({
 app.use(methodOverride('_method'));
 app.engine('handlebars',exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-var port = 3306;
+var port = 3000;
 app.listen(port);
 
 var connection = mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
+    port: 3306,
     password: 'tuckerbug',
     database: 'burgers_db'
 });
@@ -31,22 +29,22 @@ connection.connect(function(error){
 })
 
 app.get('/',function(req,res){
-    connection.query('SELECT * FROM burger_name',function(err,data){
-        res.render('index',{burger_name:data});
+    connection.query('SELECT * FROM burgers',function(err,data){
+        res.render('index',{burgers:data});
     })
 })
 
-app.post('/create', function(req,res){
+app.post('/burger/create', function(req,res){
     connection.query('INSERT INTO burgers (burger_name) VALUES (?);', [req.body.burger_name
-    ], function(error,res) {
+    ], function(error,result) {
         if(error)throw error;
         res.redirect('/');
     })
 })
 
-app.post('/eat/:id', function(req, res) {
-    connection.query('UPDATE burgers SET devoured = ? Where id = ?;', [req.body.burger_name, req.body.id],
-     function(error,res){
+app.post('/burger/eat/:id', function(req, res) {
+    connection.query('UPDATE burgers SET devoured = ? Where id = ?;', [true, req.body.id],
+     function(error,result){
          if (error)throw errror;
          res.redirect('/');
      })
