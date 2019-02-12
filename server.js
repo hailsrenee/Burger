@@ -28,7 +28,7 @@ connection.connect(function(error){
     console.log('Connected as id: '+connection.threadId);
 })
 
-app.get('/burger',function(req,res){
+app.get('/',function(req,res){
     connection.query('SELECT * FROM burgers',function(err,data){
         res.render('index',{burgers:data});
     })
