@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({
 app.use(methodOverride('_method'));
 app.engine('handlebars',exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-var port = 3000;
-app.listen(port);
+var PORT = process.env.PORT || 3000;
+app.listen(PORT);
 
 var connection = mysql.createConnection({
     host: '127.0.0.1',
